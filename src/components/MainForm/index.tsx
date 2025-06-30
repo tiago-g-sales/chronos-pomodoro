@@ -63,9 +63,14 @@ export function MainForm( ) {
       return {
         ...prevState, 
         activeTask: null,
-        currentCycle: nextCycle,
         secondsRemaining: 0,
         formattedSecondsRemaining: '00:00',
+        tasks: prevState.tasks.map(task => {
+          if (prevState.activeTask && prevState.activeTask.id === task.id) {
+            return {...task, interruptDate: Date.now()}
+          }
+          return task
+        } )
       };
     });
   
@@ -95,20 +100,25 @@ export function MainForm( ) {
           </div>
         )}
         <div className='formRow'>
-          {!state.activeTask ? (
+          {!state.activeTask && (
           < DefaultButton 
             aria-label="Iniciar nova tarefa" 
             title="Iniciar nova tarefa" 
             type='submit' 
-            icon={< PlayCircleIcon />}/>
-          ) : (
+            icon={< PlayCircleIcon />}
+            key='botao_submit'
+            />
+          )}
+          
+          { !!state.activeTask && (
           < DefaultButton 
             aria-label="Interromper tarefa atual" 
             title="Interromper tarefa atual" 
             type='button' 
-            color="red"
+            color='red'
             icon={< StopCircleIcon />}
-            onClick={handleInterruptTask}
+            onClick={ handleInterruptTask}
+            key='botao_button'
             />
           )}          
         </div>  
