@@ -7,24 +7,25 @@ import { TaskModel } from "../../models/TaskModel";
 import { useTaskContext } from "../../contexts/TaskContext/useTaskContext";
 import { getNextCycle } from "../../utils/getNextCycle";
 import { getNextCycleType } from "../../utils/getNextCycleType";
-import { formatSecondsToMinutes } from "../../utils/formatSecondsToMinutes";
+import { TaskActionTypes } from "../../contexts/TaskContext/taskActions";
+import { Tips } from "../Tips";
 
 
 export function MainForm( ) {
 
-  const {state, setState} = useTaskContext();
+  const {state, dispatch} = useTaskContext();
   //const [taskNAme, setTaskName] = useState('');
   const taskNameInput = useRef<HTMLInputElement>(null);
 
   const nextCycle = getNextCycle(state.currentCycle);
   const nextCycleType = getNextCycleType(nextCycle);
 
+
   function handleCreateNewTask(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     // Aqui você pode adicionar a lógica para criar uma nova tarefa
  
     if (taskNameInput.current === null) return;
-
 
     const taskName = taskNameInput.current.value.trim();
     if (!taskName){
@@ -43,37 +44,21 @@ export function MainForm( ) {
 
     };
 
-    const secondsRemaining = newTask.duration * 60
+    dispatch({type: TaskActionTypes.START_TASK, payload: newTask})
+    
+    const worker = new Worker(
+      new URL('../../workers/timerWorker.js', import.meta.url),
+    );
+    worker.postMessage('Olá Mundo!');
 
-    setState(prevState => {
-      return {
-        ...prevState, 
-        config: {...prevState.config},
-        activeTask: newTask,
-        currentCycle: nextCycle,
-        secondsRemaining,
-        formattedSecondsRemaining: formatSecondsToMinutes(secondsRemaining),
-        tasks: [...prevState.tasks, newTask ] 
-      };
-    });
+    worker.onmessage = function(event){
+      console.log('PRINCIPAL recebeu: ', event.data);
+
+    };
   }
 
   function handleInterruptTask(){
-    setState(prevState => {
-      return {
-        ...prevState, 
-        activeTask: null,
-        secondsRemaining: 0,
-        formattedSecondsRemaining: '00:00',
-        tasks: prevState.tasks.map(task => {
-          if (prevState.activeTask && prevState.activeTask.id === task.id) {
-            return {...task, interruptDate: Date.now()}
-          }
-          return task
-        } )
-      };
-    });
-  
+    dispatch({type: TaskActionTypes.INTERRUPT_TASK})
 }  
     return (
         
@@ -92,7 +77,7 @@ export function MainForm( ) {
         </div>
         
         <div className='formRow'>
-          <p>Próximo intervalo é de 25 min </p>
+          <Tips/>
         </div>   
         {state.currentCycle > 0 && (
           <div className='formRow'>
