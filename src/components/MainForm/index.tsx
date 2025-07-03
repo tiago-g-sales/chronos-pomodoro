@@ -12,6 +12,7 @@ import { Tips } from "../Tips";
 import { showMessage } from "../../adapters/showMessage";
 
 
+import styles from './styles.module.css'
 
 export function MainForm( ) {
 
@@ -62,8 +63,8 @@ export function MainForm( ) {
   }  
     return (
         
-        <form onSubmit={handleCreateNewTask} className='form' action=""> 
-        <div className='formRow'>
+        <form onSubmit={handleCreateNewTask} className={styles.form} action=""> 
+        <div className={styles.formRow}>
           <DefaultInput 
           labelText='task' 
           id='meuInput' 
@@ -77,15 +78,15 @@ export function MainForm( ) {
           />
         </div>
         
-        <div className='formRow'>
+        <div className={styles.formRow}>
           <Tips/>
         </div>   
         {state.currentCycle > 0 && (
-          <div className='formRow'>
+          <div className={styles.formRow}>
             <Cycles/>
           </div>
         )}
-        <div className='formRow'>
+        <div className={styles.formRow}>
           {!state.activeTask && (
           < DefaultButton 
             aria-label="Iniciar nova tarefa" 
