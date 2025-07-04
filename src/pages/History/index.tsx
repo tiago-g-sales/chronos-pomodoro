@@ -22,6 +22,10 @@ export type HomeProps = {
 
 export function History() {
 
+  useEffect(() => {
+    document.title = 'Histórico - Chronos Pomodoro';
+  },[]);
+
   const {state, dispatch} = useTaskContext()
   const [confirmClearHistory, setConfirmClearHistory] = useState(false);
   //const sortedTaks = sortTasks({tasks: state.tasks})
