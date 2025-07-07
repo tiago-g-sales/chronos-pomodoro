@@ -1,5 +1,5 @@
 
-import { HistoryIcon, HouseIcon, MoonIcon, SettingsIcon, SunIcon } from 'lucide-react'
+import { HistoryIcon, HouseIcon, MoonIcon, SettingsIcon, SunIcon, TimerIcon } from 'lucide-react'
 import styles from './styles.module.css'
 import { useState, useEffect } from 'react';
 import { RouterLink } from '../RouterLink';
@@ -44,6 +44,9 @@ export function Menu( ) {
       <RouterLink className={styles.menuLink} href='/' aria-label='Ir para a Home' title='Ir para a Home'>
         <HouseIcon  />                                      
       </RouterLink>
+      <RouterLink className={styles.menuLink} href='/stopwatch/' aria-label='Ir para o Cronômetro' title='Ir para o Cronômetro'>
+        <TimerIcon  />  
+      </RouterLink>  
       <RouterLink className={styles.menuLink} href='/history/' aria-label='Ver Histórico' title='Ver Histórico'>
         <HistoryIcon  />                                      
       </RouterLink>

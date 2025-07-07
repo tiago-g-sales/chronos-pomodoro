@@ -15,7 +15,7 @@ import { showMessage } from "../../adapters/showMessage";
 import { TaskActionTypes } from "../../contexts/TaskContext/taskActions";
 
 
-export type HomeProps = {
+export type HistoryProps = {
   state: TaskStateModel,
   setState: React.Dispatch<React.SetStateAction<TaskStateModel>>;
 }

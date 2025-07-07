@@ -12,3 +12,9 @@ export type TaskStateModel = {
         longBreakTime: number; // em segundos
     }
 }
+
+export type StopwatchStateModel = {
+    tasks: TaskModel[];
+    secondsRemaining: number;
+    formattedHoursMinSeconds: string;
+}
